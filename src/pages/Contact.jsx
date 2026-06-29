@@ -1,8 +1,51 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
+import axios from "axios";
 import Container from "../components/common/Container";
 import CTA from "../components/home/CTA";
 
 function Contact() {
+
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/contact",
+        formData
+      );
+
+      alert(res.data.message);
+
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+
+    } catch (error) {
+      console.log(error);
+      alert("Something went wrong");
+    }
+  };
+
   return (
     <>
       {/* Hero Section */}
@@ -150,103 +193,116 @@ function Contact() {
 
             {/* Right Side Form */}
 
-            <motion.form
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="
-                bg-white
-                p-8
-                rounded-[32px]
-                shadow-2xl
-                border
-                border-slate-200
-              "
-            >
+           <motion.form
+  onSubmit={handleSubmit}
+  initial={{ opacity: 0, x: 50 }}
+  whileInView={{ opacity: 1, x: 0 }}
+  viewport={{ once: true }}
+  className="
+    bg-white
+    p-8
+    rounded-[32px]
+    shadow-2xl
+    border
+    border-slate-200
+  "
+>
               <h3 className="text-3xl font-bold text-slate-900 mb-8">
                 Send Message
               </h3>
 
               <div className="space-y-5">
 
-                <input
-                  type="text"
-                  placeholder="Full Name"
-                  className="
-                    w-full h-14 px-5 rounded-2xl
-                    border border-slate-200
-                    focus:border-blue-500
-                    focus:ring-4 focus:ring-blue-100
-                    outline-none transition-all
-                  "
-                />
+            <input
+  type="text"
+  name="fullName"
+  value={formData.fullName}
+  onChange={handleChange}
+  placeholder="Full Name"
+  className="
+    w-full h-14 px-5 rounded-2xl
+    border border-slate-200
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-100
+    outline-none transition-all
+  "
+/><input
+  type="email"
+  name="email"
+  value={formData.email}
+  onChange={handleChange}
+  placeholder="Email Address"
+  className="
+    w-full h-14 px-5 rounded-2xl
+    border border-slate-200
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-100
+    outline-none transition-all
+  "
+/>
+       <input
+  type="tel"
+  name="phone"
+  value={formData.phone}
+  onChange={handleChange}
+  placeholder="Phone Number"
+  className="
+    w-full h-14 px-5 rounded-2xl
+    border border-slate-200
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-100
+    outline-none transition-all
+  "
+/>
+<input
+  type="text"
+  name="subject"
+  value={formData.subject}
+  onChange={handleChange}
+  placeholder="Project Type"
+  className="
+    w-full h-14 px-5 rounded-2xl
+    border border-slate-200
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-100
+    outline-none transition-all
+  "
+/>
 
-                <input
-                  type="email"
-                  placeholder="Email Address"
-                  className="
-                    w-full h-14 px-5 rounded-2xl
-                    border border-slate-200
-                    focus:border-blue-500
-                    focus:ring-4 focus:ring-blue-100
-                    outline-none transition-all
-                  "
-                />
-
-                <input
-                  type="tel"
-                  placeholder="Phone Number"
-                  className="
-                    w-full h-14 px-5 rounded-2xl
-                    border border-slate-200
-                    focus:border-blue-500
-                    focus:ring-4 focus:ring-blue-100
-                    outline-none transition-all
-                  "
-                />
-
-                <input
-                  type="text"
-                  placeholder="Project Type"
-                  className="
-                    w-full h-14 px-5 rounded-2xl
-                    border border-slate-200
-                    focus:border-blue-500
-                    focus:ring-4 focus:ring-blue-100
-                    outline-none transition-all
-                  "
-                />
-
-                <textarea
-                  rows="6"
-                  placeholder="Tell us about your project..."
-                  className="
-                    w-full p-5 rounded-2xl
-                    border border-slate-200
-                    focus:border-blue-500
-                    focus:ring-4 focus:ring-blue-100
-                    outline-none transition-all
-                  "
-                />
+                <textarea  
+  rows="6"
+  name="message"
+  value={formData.message}
+  onChange={handleChange}
+  placeholder="Tell us about your project..."
+  className="
+    w-full p-5 rounded-2xl
+    border border-slate-200
+    focus:border-blue-500
+    focus:ring-4 focus:ring-blue-100
+    outline-none transition-all
+  "
+/>
 
                 <button
-                  className="
-                    w-full h-14
-                    rounded-2xl
-                    font-bold
-                    text-white
-                    bg-gradient-to-r
-                    from-blue-600
-                    via-indigo-600
-                    to-purple-600
-                    hover:scale-[1.02]
-                    transition-all
-                    duration-300
-                    shadow-xl
-                  "
-                >
-                  Send Message →
-                </button>
+  type="submit"
+  className="
+    w-full h-14
+    rounded-2xl
+    font-bold
+    text-white
+    bg-gradient-to-r
+    from-blue-600
+    via-indigo-600
+    to-purple-600
+    hover:scale-[1.02]
+    transition-all
+    duration-300
+    shadow-xl
+  "
+>
+  Send Message →
+</button>
 
               </div>
             </motion.form>
